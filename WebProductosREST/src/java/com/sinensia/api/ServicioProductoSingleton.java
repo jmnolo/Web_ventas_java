@@ -8,7 +8,7 @@ import java.util.ArrayList;
 
 public class ServicioProductoSingleton {    
     
-    private ArrayList<Producto> listaProductos;
+    private final ArrayList<Producto> listaProductos;
     
     public void insertar(Producto p) {
         listaProductos.add(p);
@@ -18,11 +18,11 @@ public class ServicioProductoSingleton {
         p.setPrecio(p.getPrecio()+ " - Modificado");
         return p;
     }
-    public Producto[] obtenerTodos() {
-        return (Producto[]) listaProductos.toArray();
+    public ArrayList<Producto> obtenerTodos() {
+        return listaProductos;
     }
     // La única instancia es privada.
-    private static ServicioProductoSingleton instancia = null;    
+    private static ServicioProductoSingleton instancia;    
     // Nadie puede hacer new excepto dentro de esta clase.
     // Puede ser protected
     private ServicioProductoSingleton() {

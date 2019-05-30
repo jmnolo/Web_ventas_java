@@ -16,7 +16,13 @@ public class Producto {
     private String precio;
     
     public Producto() {
-    }   
+    }
+
+    public Producto(String nombre, String precio) {
+        this.nombre = nombre;
+        this.precio = precio;
+    }
+    
 
     public String getNombre() {
         return nombre;
