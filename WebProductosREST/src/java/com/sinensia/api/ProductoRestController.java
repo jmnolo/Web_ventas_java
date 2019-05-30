@@ -15,8 +15,9 @@ import javax.servlet.http.HttpServletResponse;
 @WebServlet( asyncSupported = true, urlPatterns = "/api/productos" )
 public class ProductoRestController extends HttpServlet        
 {
+    
     @Override
-    protected void doGet(HttpServletRequest request, 
+    protected void doPut(HttpServletRequest request, 
             HttpServletResponse response)
             throws ServletException, IOException
     {
