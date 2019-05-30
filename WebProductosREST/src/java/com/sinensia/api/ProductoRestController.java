@@ -1,11 +1,15 @@
 package com.sinensia.api;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -66,6 +70,49 @@ public class ProductoRestController extends HttpServlet
             HttpServletResponse response)
             throws ServletException, IOException
     {
+        PrintWriter escritorRespuesta =  response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
+        //Producto obj1 = new Producto("abc", "3");
+        //Producto obj2 = new Producto("gawk", "90");
+        ArrayList<Producto> productos = sps.obtenerTodos();
+        //List<Producto> list = Arrays.asList(obj1, obj2);
+        
+        JsonArray ja= new JsonArray();
+        
+        Gson gson = new Gson();
+        
+        for (Producto prod: productos){
+            String json = gson.toJson(prod);
+            ja.add(json);
+        }
+        
+        
+        
+        //String json = gson.toJson(productos);
+        escritorRespuesta.println(ja);
+        
+        /*
+        PrintWriter escritorRespuesta =  response.getWriter();
+        response.setContentType("application/json;charset=UTF-8");
+        
+        Gson gson = new Gson();
+
+        ArrayList<Producto> productos = sps.obtenerTodos();
+        for (Producto producto: sps.obtenerTodos()){
+        System.out.println(producto.getNombre());}
+        Gson gsonBuilder = new GsonBuilder().create();
+        
+        String jsonRespuesta = gson.toJson(productos);
+        escritorRespuesta.println(jsonRespuesta);*/
+    }
+    
+    
+    @Override
+    protected void doPost(HttpServletRequest request, 
+            HttpServletResponse response)
+            throws ServletException, IOException
+    {
+        
         PrintWriter escritorRespuesta = response.getWriter();
         response.setContentType("application/json;charset=UTF-8");
         // Coge de un flujo:
@@ -82,86 +129,9 @@ public class ProductoRestController extends HttpServlet
         Producto producto = g.fromJson(textoJson.toString(), Producto.class);
         
         System.out.println(">>>> " + producto.getNombre());
-        ServicioProductoSingleton sps = ServicioProductoSingleton.getInstancia();
         sps.insertar(producto);
-    }
-    
-    //@Override
-    protected void doGet2(HttpServletRequest request, 
-            HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        Producto p1 = new Producto("P1","30");
-        Producto p2 = new Producto("P2","4");
-        sps.insertar(p1);
-        sps.insertar(p2);
-        /*p1.setNombre("P1");
-        p1.setPrecio("30 €");
-        p2.setNombre("P2");
-        p2.setPrecio("50 $");*/
-        
-        
-        //
-        //
-        BufferedReader reader = request.getReader();
-        Gson gson = new Gson();
-        Producto[] productos = gson.fromJson(reader, Producto[].class);
-        //
-        
-        PrintWriter escritorRespuesta =  response.getWriter();
-        response.setContentType("application/json;charset=UTF-8");
-        
-        //
-        String jsonRespuesta = gson.toJson(productos);
-        escritorRespuesta.println(jsonRespuesta);
-        // 
-        
-        
-        /*BufferedReader bufRead = request.getReader();
-        
-        StringBuilder textoJson = new StringBuilder();
-        for (String lineaJson = bufRead.readLine(); 
-                lineaJson != null; 
-                lineaJson = bufRead.readLine()) {
-            
-            textoJson.append(lineaJson);
+        for(Producto prod : sps.obtenerTodos()) {
+            System.out.println(prod.getNombre());
         }
-        bufRead.close();
-        
-        System.out.println(">>>> " + textoJson.toString().toUpperCase());
-       
-        Gson gson = new Gson();
-        Producto producto = gson.fromJson(textoJson.toString(), Producto.class);
-        
-        System.out.println(">>>> " + producto.getNombre());*/
-        
-        /*sps.obtenerTodos();
-        Gson gson = new Gson();
-        for (int i=0;i<sps.obtenerTodos().length;i++){
-            Producto producto=sps.obtenerTodos()[i];
-            String jsonRespuesta = gson.toJson(producto);
-            System.out.println(producto);
-            escritorRespuesta.println(jsonRespuesta);
-        }*/
-        
-                
-        // ServicioProductoSingleton i = ServicioProductoSingleton.getInstancia();
-    }
-    
-    @Override
-    protected void doPost(HttpServletRequest request, 
-            HttpServletResponse response)
-            throws ServletException, IOException
-    {
-        
-        PrintWriter escritorRespuesta =  response.getWriter();
-        response.setContentType("application/json;charset=UTF-8");
-        
-        Gson gson = new Gson();
-
-        ArrayList<Producto> productos = sps.obtenerTodos();
-        
-        String jsonRespuesta = gson.toJson(productos);
-        escritorRespuesta.println(jsonRespuesta);
     }
 }
